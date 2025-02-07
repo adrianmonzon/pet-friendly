@@ -26,8 +26,8 @@ export default {
   box-sizing: border-box;
 }
 
-html, body {
-  font-family: 'Inter', sans-serif;
+html, body, button, select, input::placeholder {
+  font-family: 'Poppins', sans-serif;
   height: 100%;
   color: #333;
 }

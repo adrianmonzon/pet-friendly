@@ -51,7 +51,7 @@ export default {
 <style scoped>
 .heart {
   position: absolute;
-  top: 12px;
+  top: 17px;
   right: 8px;
   width: 24px;
   height: 24px;

@@ -225,7 +225,7 @@ export default {
 .beaches-list {
   max-width: 1200px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+
   padding: 20px;
   text-align: center;
 }
