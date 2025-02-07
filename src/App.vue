@@ -29,9 +29,29 @@ export default {
 html, body {
   font-family: 'Inter', sans-serif;
   height: 100%;
-  background-color: #f5f5f5;
   color: #333;
 }
+
+body {
+  background-image: url('./assets/background3.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-attachment: fixed;
+  height: 100%;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
 
 .grid-container {
   display: grid;

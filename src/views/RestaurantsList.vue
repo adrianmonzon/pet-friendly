@@ -17,7 +17,6 @@
       
       <!-- Filtro por política pet-friendly -->
       <div class="filter-container">
-        <label for="petPolicy">Filtrar por:</label>
         <select v-model="selectedPolicy" @change="handlePolicyFilter">
           <option value="">Todas las políticas</option>
           <option v-for="policy in petPolicies" :key="policy" :value="policy">{{ policy }}</option>
@@ -120,7 +119,7 @@ export default {
       categories: [
         { name: 'Restaurantes', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/restaurantes' },
         { name: 'Playas', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/playas' },
-        { name: 'Tiendas', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/tiendas' },
+        { name: 'Establecimientos', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/establecimientos' },
         { name: 'Veterinarios', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/veterinarios' }
       ]
     };
@@ -191,7 +190,7 @@ export default {
         if (restaurant.coordinates) {
           L.marker([restaurant.coordinates.lat, restaurant.coordinates.lng], {
             icon: L.icon({
-              iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+              iconUrl: 'https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f43e.png',
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34],
@@ -209,8 +208,7 @@ export default {
 <style scoped>
 .filters {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
   margin-top: 20px;
 }
@@ -229,7 +227,7 @@ export default {
 
 .filter-container select {
   padding: 8px;
-  font-size: 1rem;
+  font-size: .9rem;
   border-radius: 5px;
 }
 
@@ -261,7 +259,7 @@ export default {
 
 .results-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -288,6 +286,20 @@ export default {
   text-decoration: none;
   color: #333;
 }
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .results-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .results-list {
+    grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+  }
+}
+
 
 .restaurant-image {
   width: 100%;

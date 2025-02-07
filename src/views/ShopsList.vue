@@ -1,7 +1,7 @@
 <template>
   <div class="shops-list">
-    <h1>Tiendas Pet-Friendly</h1>
-    <p class="subtitle">Explora tiendas donde puedes ir con tu mascota.</p>
+    <h1>Establecimientos Pet-Friendly</h1>
+    <p class="subtitle">Explora establecimientos donde puedes ir con tu mascota.</p>
     <SearchBar @searchQuery="handleSearch" />
     
     <!-- Filtros -->
@@ -36,7 +36,7 @@
       <p class="no-results">No se encontraron resultados para esta búsqueda.</p>
     </div>
     
-    <!-- Mapa con las tiendas -->
+    <!-- Mapa con las establecimientos -->
     <div id="map" class="map-container"></div>
   </div>
 </template>
@@ -149,7 +149,7 @@ export default {
         if (shop.coordinates) {
           L.marker([shop.coordinates.lat, shop.coordinates.lng], {
             icon: L.icon({
-              iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+              iconUrl: 'https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f43e.png',
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34]
@@ -168,8 +168,7 @@ export default {
 <style scoped>
 .filters {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
   margin-top: 20px;
 }
@@ -188,7 +187,7 @@ export default {
 
 .filter-container select {
   padding: 8px;
-  font-size: 1rem;
+  font-size: .9rem;
   border-radius: 5px;
 }
 
@@ -220,7 +219,7 @@ export default {
 
 .results-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -247,6 +246,20 @@ export default {
   text-decoration: none;
   color: #333;
 }
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .results-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .results-list {
+    grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+  }
+}
+
 
 .shop-image {
   width: 100%;

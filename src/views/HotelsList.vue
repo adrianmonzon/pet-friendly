@@ -1,7 +1,7 @@
 <template>
-  <div class="beaches-list">
-    <h1>Playas Pet-Friendly</h1>
-    <p class="subtitle">Explora las playas de España donde puedes disfrutar con tu mascota.</p>
+  <div class="hotels-list">
+    <h1>Hoteles Pet-Friendly</h1>
+    <p class="subtitle">Explora los hoteles de España donde puedes disfrutar con tu mascota.</p>
     <SearchBar @searchQuery="handleSearch" />
     
     <!-- Filtros -->
@@ -24,18 +24,18 @@
       </div>
     </section>
     
-    <div v-if="finalBeaches.length">
+    <div v-if="finalHotels.length">
       <ul class="results-list">
-        <li v-for="beach in finalBeaches" :key="beach.id" class="search-result-item">
-           <div class="title-container">
-            <h2>{{ beach.name }}</h2>
-            <FavoriteButton :place="beach" />
+        <li v-for="hotel in finalHotels" :key="hotel.id" class="search-result-item">
+          <div class="title-container">
+            <h2>{{ hotel.name }}</h2>
+            <FavoriteButton :place="hotel" />
           </div>
-          <router-link :to="'/beach/' + beach.id" class="result-link">
-            <img :src="beach.image" :alt="beach.name" class="beach-image" />
-            <p class="beach-description">{{ beach.description }}</p>
-            <p class="beach-info"><strong>Dirección:</strong> {{ beach.address }}</p>
-            <p class="beach-info"><strong>Política Pet-Friendly:</strong> {{ beach.petPolicy }}</p>
+          <router-link :to="'/hotel/' + hotel.id" class="result-link">
+            <img :src="hotel.image" :alt="hotel.name" class="hotel-image" />
+            <p class="hotel-description">{{ hotel.description }}</p>
+            <p class="hotel-info"><strong>Dirección:</strong> {{ hotel.address }}</p>
+            <p class="hotel-info"><strong>Política Pet-Friendly:</strong> {{ hotel.petPolicy }}</p>
           </router-link>
         </li>
       </ul>
@@ -44,8 +44,15 @@
       <p class="no-results">No se encontraron resultados para esta búsqueda.</p>
     </div>
     
-    <!-- Mapa con las playas -->
+    <!-- Mapa con los hoteles -->
     <div id="map" class="map-container"></div>
+    
+    <!-- Botones de ver más -->
+    <div class="view-more-buttons">
+      <button @click="redirectToCategory('/hoteles')">Ver Hoteles</button>
+      <button @click="redirectToCategory('/playas')">Ver Playas</button>
+      <button @click="redirectToCategory('/tiendas')">Ver Tiendas</button>
+    </div>
   </div>
 </template>
 
@@ -56,82 +63,82 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default {
-  name: 'BeachesList',
+  name: 'HotelsList',
   components: {
     SearchBar,
     FavoriteButton
   },
   data() {
     return {
-      beaches: [
+      hotels: [
         {
-          id: 1,
-          name: 'Playa de la Malagueta',
-          description: 'Playa urbana en Málaga donde los perros son bienvenidos.',
-          address: 'Málaga, España',
-          petPolicy: 'Permitidos perros en la zona habilitada.',
-          coordinates: { lat: 36.7213, lng: -4.4204 },
-          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+          id: 111111,
+          name: 'Hotel Pet-Friendly Madrid',
+          description: 'Hotel moderno que acepta mascotas de cualquier tamaño.',
+          address: 'Calle Falsa, 123, Madrid, España',
+          petPolicy: 'Permitidos perros y gatos.',
+          coordinates: { lat: 40.4168, lng: -3.7038 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         },
         {
-          id: 2,
-          name: 'Playa de la Barceloneta',
-          description: 'Una de las playas más famosas de Barcelona que permite perros.',
-          address: 'Barcelona, España',
-          petPolicy: 'Permitidos perros con correa en algunas zonas.',
-          coordinates: { lat: 41.3784, lng: 2.1917 },
-          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+          id: 222222,
+          name: 'Hotel Mascotas Barcelona',
+          description: 'Un hotel boutique en el centro de Barcelona, ideal para tus mascotas.',
+          address: 'Passeig de Gràcia, 45, Barcelona, España',
+          petPolicy: 'Mascotas permitidas solo en algunas áreas.',
+          coordinates: { lat: 41.3918, lng: 2.1649 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         },
         {
-          id: 3,
-          name: 'Playa de Punta Umbría',
-          description: 'Playa natural en Huelva con acceso para perros.',
-          address: 'Huelva, España',
-          petPolicy: 'Zona habilitada para perros.',
-          coordinates: { lat: 37.1947, lng: -7.0702 },
-          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+          id: 333333,
+          name: 'Hotel Animal Loco',
+          description: 'Hotel de lujo con zonas especiales para tus mascotas.',
+          address: 'Calle Real, 45, Valencia, España',
+          petPolicy: 'Permitidos perros y animales pequeños.',
+          coordinates: { lat: 39.4699, lng: -0.3763 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         },
         {
-          id: 4,
-          name: 'Playa de Gorrondatxe',
-          description: 'Playa en Bizkaia donde se permiten perros en la parte habilitada.',
-          address: 'Bizkaia, España',
-          petPolicy: 'Perros permitidos en algunas zonas.',
-          coordinates: { lat: 43.4190, lng: -3.0163 },
-          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+          id: 444444,
+          name: 'Hotel Peludo Tenerife',
+          description: 'Hotel en Tenerife donde las mascotas son siempre bienvenidas.',
+          address: 'Avenida de la Playa, 12, Tenerife, España',
+          petPolicy: 'Perros permitidos en todo el hotel.',
+          coordinates: { lat: 28.2916, lng: -16.6291 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         },
         {
-          id: 5,
-          name: 'Playa de la Barrosa',
-          description: 'Playa en Chiclana de la Frontera donde se permite el acceso de perros.',
-          address: 'Chiclana, Cádiz, España',
-          petPolicy: 'Permitidos perros en la zona especial.',
-          coordinates: { lat: 36.3413, lng: -6.1502 },
-          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+          id: 555555,
+          name: 'Hotel Canino Sevilla',
+          description: 'Un refugio para perros y sus dueños en el corazón de Sevilla.',
+          address: 'Calle del Sol, 78, Sevilla, España',
+          petPolicy: 'Permite perros y gatos en todas las habitaciones.',
+          coordinates: { lat: 37.38909, lng: -5.98446 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         }
       ],
       query: '',
       selectedPolicy: '',
       selectedProvince: '',
-      petPolicies: ['Permitidos perros en la zona habilitada.', 'Permitidos perros con correa.', 'Zona habilitada para perros.', 'Perros permitidos en algunas zonas.'],
+      petPolicies: ['Permitidos perros y gatos.', 'Mascotas permitidas solo en algunas áreas.', 'Perros permitidos en todo el hotel.'],
       map: null,
-      provinces: ['Málaga', 'Barcelona', 'Huelva', 'Bizkaia', 'Cádiz']
+      provinces: ['Madrid', 'Barcelona', 'Valencia', 'Tenerife', 'Sevilla']
     };
   },
   computed: {
-    finalBeaches() {
-      return this.beaches.filter((beach) => {
+    finalHotels() {
+      return this.hotels.filter((hotel) => {
         const matchesQuery = this.query === '' ||
-          beach.name.toLowerCase().includes(this.query.toLowerCase()) ||
-          beach.description.toLowerCase().includes(this.query.toLowerCase());
-        const matchesPolicy = !this.selectedPolicy || beach.petPolicy === this.selectedPolicy;
-        const matchesProvince = !this.selectedProvince || beach.address.includes(this.selectedProvince);
+          hotel.name.toLowerCase().includes(this.query.toLowerCase()) ||
+          hotel.description.toLowerCase().includes(this.query.toLowerCase());
+        const matchesPolicy = !this.selectedPolicy || hotel.petPolicy === this.selectedPolicy;
+        const matchesProvince = !this.selectedProvince || hotel.address.includes(this.selectedProvince);
         return matchesQuery && matchesPolicy && matchesProvince;
       });
     }
   },
   watch: {
-    finalBeaches: {
+    finalHotels: {
       handler() {
         this.updateMap();
       },
@@ -144,14 +151,17 @@ export default {
     });
   },
   methods: {
-    handleSearch(query) {
-      this.query = query; 
+    redirectToCategory(route) {
+      this.$router.push(route);
     },
     handleProvinceFilter() {
       this.updateMap();
     },
     handlePolicyFilter() {
       this.updateMap();
+    },
+    handleSearch(query) {
+      this.query = query;
     },
     initMap() {
       if (this.map) {
@@ -177,9 +187,9 @@ export default {
     updateMap() {
       if (!this.map) return;
 
-      this.finalBeaches.forEach((beach) => {
-        if (beach.coordinates) {
-          L.marker([beach.coordinates.lat, beach.coordinates.lng], {
+      this.finalHotels.forEach((hotel) => {
+        if (hotel.coordinates) {
+          L.marker([hotel.coordinates.lat, hotel.coordinates.lng], {
             icon: L.icon({
               iconUrl: 'https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f43e.png',
               iconSize: [25, 41],
@@ -187,12 +197,12 @@ export default {
               popupAnchor: [1, -34],
             })
           }).addTo(this.map)
-            .bindPopup(`<b>${beach.name}</b><br>${beach.address}`);
+            .bindPopup(`<b>${hotel.name}</b><br>${hotel.address}`);
         }
       });
       this.map.invalidateSize();
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -222,7 +232,7 @@ export default {
   border-radius: 5px;
 }
 
-.beaches-list {
+.hotels-list {
   max-width: 1200px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
@@ -230,8 +240,14 @@ export default {
   text-align: center;
 }
 
-.beaches-list h1 {
+.hotels-list h1 {
   font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.hotels-list h2 {
+  font-size: 2rem;
   color: #007bff;
   margin-bottom: 10px;
 }
@@ -292,7 +308,7 @@ export default {
 }
 
 
-.beach-image {
+.hotel-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -319,13 +335,13 @@ export default {
   color: #0056b3;
 }
 
-.beach-description {
+.hotel-description {
   font-size: 1rem;
   color: #444;
   margin-bottom: 8px;
 }
 
-.beach-info {
+.hotel-info {
   font-size: 0.95rem;
   color: #666;
 }
@@ -342,5 +358,25 @@ export default {
   margin-top: 20px;
   border-radius: 8px;
   border: 1px solid #ddd;
+}
+
+.view-more-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.view-more-buttons button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-more-buttons button:hover {
+  background-color: #0056b3;
 }
 </style>

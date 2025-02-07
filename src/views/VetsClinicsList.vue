@@ -140,7 +140,7 @@ export default {
         if (clinic.coordinates) {
           L.marker([clinic.coordinates.lat, clinic.coordinates.lng], {
             icon: L.icon({
-              iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+              iconUrl: 'https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f43e.png',
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34]
@@ -159,8 +159,7 @@ export default {
 <style scoped>
 .filters {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
   margin-top: 20px;
 }
@@ -179,7 +178,7 @@ export default {
 
 .filter-container select {
   padding: 8px;
-  font-size: 1rem;
+  font-size: .9rem;
   border-radius: 5px;
 }
 
@@ -211,7 +210,7 @@ export default {
 
 .results-list {
   display: grid;
-  /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -238,6 +237,20 @@ export default {
   text-decoration: none;
   color: #333;
 }
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .results-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .results-list {
+    grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+  }
+}
+
 
 .clinic-image {
   width: 100%;

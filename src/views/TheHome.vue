@@ -13,6 +13,7 @@
     </section>
     
     <div v-if="finalRestaurants.length">
+      <h2>Lugares sugeridos</h2>
       <ul class="results-list">
         <li v-for="restaurant in finalRestaurants" :key="restaurant.id" class="search-result-item">
            <div class="title-container">
@@ -30,6 +31,13 @@
     </div>
     <div v-else>
       <p class="no-results">No se encontraron resultados para esta búsqueda.</p>
+    </div>
+
+    <div class="buttons-container">
+      <button @click="redirectToCategory('/restaurantes')" class="category-btn">Ver Restaurantes</button>
+      <button @click="redirectToCategory('/hoteles')" class="category-btn">Ver Hoteles</button>
+      <button @click="redirectToCategory('/playas')" class="category-btn">Ver Playas</button>
+      <button @click="redirectToCategory('/comercios')" class="category-btn">Ver Comercios</button>
     </div>
     
     <!-- Mapa con los restaurantes -->
@@ -62,14 +70,13 @@ export default {
           image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
         },
         {
-          id: 222,
-          name: 'El Rincón Peludo',
-          description: 'Restaurante clásico que da la bienvenida a mascotas de todos los tamaños.',
-          address: 'Passeig de Gràcia, 45, Barcelona, España',
-          petPolicy: 'Todas las mascotas permitidas con correa.',
-          coordinates: { lat: 41.39183, lng: 2.16528 },
-          image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
-        },
+          id: 1,
+          name: 'Playa de la Malagueta',
+          description: 'Playa urbana en Málaga donde los perros son bienvenidos.',
+          address: 'Málaga, España',
+          petPolicy: 'Permitidos perros en la zona habilitada.',
+          coordinates: { lat: 36.7213, lng: -4.4204 },
+          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',        },
          {
           id: 333,
           name: 'Mascota Café',
@@ -80,23 +87,32 @@ export default {
           image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
         },
         {
-          id: 444,
-          name: 'Doggy Deli',
-          description: 'Restaurante gourmet con un menú especial para perros y gatos.',
-          address: 'Calle Larios, 12, Málaga, España',
-          petPolicy: 'Se permiten mascotas dentro y fuera.',
-          coordinates: { lat: 36.72127, lng: -4.42140 },
-          image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
+          id: 1111,
+          name: 'Tienda Mascotas Felices',
+          description: 'Tienda especializada en productos para mascotas.',
+          address: 'Calle Falsa, 123, Madrid, España',
+          petPolicy: 'Permitidos perros con correa.',
+          coordinates: { lat: 40.4168, lng: -3.7038 },
+          image: 'https://tribekaretail.com/wp-content/uploads/2020/07/como-disenar-el-escaparate-y-la-fachada-de-tu-tienda-de-moda-parfois-completa.jpg'
         },
         {
-          id: 555,
-          name: 'Amigos Peludos',
-          description: 'Cafetería con snacks para humanos y mascotas.',
-          address: 'Plaza Mayor, 1, Salamanca, España',
-          petPolicy: 'Perros permitidos con correa en todas las áreas.',
-          coordinates: { lat: 40.96445, lng: -5.66354 },
-          image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
-        }
+          id: 2222,
+          name: 'El Rincón Animal',
+          description: 'Tienda con una gran variedad de productos para mascotas.',
+          address: 'Avenida del Mar, 45, Barcelona, España',
+          petPolicy: 'Permitidos animales pequeños.',
+          coordinates: { lat: 41.3918, lng: 2.1649 },
+          image: 'https://tribekaretail.com/wp-content/uploads/2020/07/como-disenar-el-escaparate-y-la-fachada-de-tu-tienda-de-moda-parfois-completa.jpg'
+        },
+        {
+          id: 3,
+          name: 'Playa de Punta Umbría',
+          description: 'Playa natural en Huelva con acceso para perros.',
+          address: 'Huelva, España',
+          petPolicy: 'Zona habilitada para perros.',
+          coordinates: { lat: 37.1947, lng: -7.0702 },
+          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
+        },
       ],
       query: '',
       selectedPolicy: '',
@@ -106,10 +122,11 @@ export default {
       provinces: ['Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ceuta', 'Ciudad Real', 'Córdoba', 'Cuenca', 'Gerona', 'Granada', 'Guadalajara', 'Guipúzcoa', 'Huelva', 'Huesca', 'Islas Baleares', 'Jaén', 'La Coruña', 'La Rioja', 'Las Palmas', 'León', 'Lérida', 'Lugo', 'Madrid', 'Málaga', 'Melilla', 'Murcia', 'Navarra', 'Orense', 'Palencia', 'Pontevedra', 'Salamanca', 'Santa Cruz de Tenerife', 'Segovia', 'Sevilla', 'Soria', 'Tarragona', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza'],
       categories: [
         { name: 'Restaurantes', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/restaurantes' },
-        { name: 'Playas', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/playas' },
-        { name: 'Tiendas', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/tiendas' },
-        { name: 'Veterinarios', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/clinicas' },
-        { name: 'Eventos', image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg', route: '/eventos' }
+        { name: 'Hoteles', image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg', route: '/hoteles' },
+        { name: 'Playas', image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg', route: '/playas' },
+        { name: 'Comercios', image: 'https://tribekaretail.com/wp-content/uploads/2020/07/como-disenar-el-escaparate-y-la-fachada-de-tu-tienda-de-moda-parfois-completa.jpg', route: '/comercios' },
+        { name: 'Veterinarios', image: 'https://medios.clinicaveterinariamadrid.es/2_Plaza-de-Castilla-1.jpg', route: '/clinicas' },
+        { name: 'Eventos', image: 'https://www.grupobillingham.com/blog/wp-content/uploads/2020/11/calendario-de-mesa-750x410.jpg', route: '/eventos' }
       ]
     };
   },
@@ -179,7 +196,7 @@ export default {
         if (restaurant.coordinates) {
           L.marker([restaurant.coordinates.lat, restaurant.coordinates.lng], {
             icon: L.icon({
-              iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+              iconUrl: 'https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/1f43e.png',
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34],
@@ -200,6 +217,7 @@ export default {
   justify-content: center;
   gap: 30px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .category {
@@ -207,14 +225,43 @@ export default {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.category:hover {
+  color: #0056b3;
+  transform: scale(1.1);
 }
 
 .category-image {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 8px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.buttons-container button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.buttons-container button:hover {
+  background-color: #0056b3;
 }
 
 .filters {
@@ -239,7 +286,7 @@ export default {
 
 .filter-container select {
   padding: 8px;
-  font-size: 1rem;
+  font-size: .9rem;
   border-radius: 5px;
 }
 
@@ -253,6 +300,12 @@ export default {
 
 .home h1 {
   font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.home h2 {
+  font-size: 2rem;
   color: #007bff;
   margin-bottom: 10px;
 }
@@ -271,7 +324,7 @@ export default {
 
 .results-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -298,6 +351,20 @@ export default {
   text-decoration: none;
   color: #333;
 }
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .results-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .results-list {
+    grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+  }
+}
+
 
 .restaurant-image {
   width: 100%;

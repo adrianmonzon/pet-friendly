@@ -17,7 +17,7 @@ export default {
     return {
       calendarOptions: {
         plugins: [dayGridPlugin],
-        initialView: 'dayGridMonth', // Esto debe coincidir con un plugin cargado
+        initialView: 'dayGridMonth',
         locale: esLocale,
         events: [
           { title: 'Paseo perruno', start: '2025-02-12' },

@@ -1,23 +1,20 @@
-// 2. Vista: Detalle de Restaurante con sección de reseñas y mapa
 <template>
-  <div class="restaurant-details">
-    <h1>{{ selectedRestaurant.name }}</h1>
-    <p>{{ selectedRestaurant.description }}</p>
-    <p>
-      <strong>Address:</strong> {{ selectedRestaurant.address }}
-    </p>
-    <p>
-      <strong>Pet Policy:</strong> {{ selectedRestaurant.petPolicy }}
-    </p>
+  <div class="place-details">
+    <h1>{{ selectedPlace.name }}</h1>
+    <p>{{ selectedPlace.description }}</p>
+    <p><strong>Dirección:</strong> {{ selectedPlace.address }}</p>
+    <p><strong>Política Pet-Friendly:</strong> {{ selectedPlace.petPolicy }}</p>
+
     <!-- Contenedor para el mapa -->
     <div id="map" class="map-container"></div>
-    <button @click="goBack" class="back-button">Go Back</button>
+
+    <button @click="goBack" class="back-button">Volver</button>
 
     <!-- Sección de reseñas -->
     <div class="reviews-section">
       <ReviewForm v-if="hasVisited" @addReview="addReview" />
       <ul v-if="reviews.length" class="review-list">
-      <h3>Reseñas</h3>
+        <h3>Reseñas</h3>
         <li v-for="review in reviews" :key="review.id" class="review-card">
           <p>{{ review.text }}</p>
           <p><strong>Valoración:</strong> {{ review.rating }} / 5</p>
@@ -37,33 +34,37 @@ export default {
   components: { ReviewForm },
   data() {
     return {
-      restaurants: [
+      places: [
         {
           id: 1,
-          name: 'Paws Café',
-          description: 'Cozy café with a dog-friendly menu.',
-          address: '1234 Paw Street, New York, USA',
-          coordinates: { lat: 40.73061, lng: -73.935242 },
-          petPolicy: 'Dogs allowed on terrace.',
+          name: 'Playa de la Malagueta',
+          description: 'Playa urbana en Málaga donde los perros son bienvenidos.',
+          address: 'Málaga, España',
+          petPolicy: 'Permitidos perros en la zona habilitada.',
+          coordinates: { lat: 36.7213, lng: -4.4204 },
+          type: 'playa',
+          image: 'https://fotos.hoteles.net/articulos/playa-barceloneta-barcelona-3153-1.jpg',
         },
         {
-          id: 2,
-          name: 'Furry Diner',
-          description: 'Classic diner welcoming pets of all sizes.',
-          address: '5678 Furry Ave, Los Angeles, USA',
-          coordinates: { lat: 34.052235, lng: -118.243683 },
-          petPolicy: 'All pets allowed with leash.',
+          id: 11,
+          name: 'La Huella Canina',
+          description: 'Un café acogedor con un menú especial para perros.',
+          address: 'Calle Gran Vía, 23, Madrid, España',
+          petPolicy: 'Permitidos perros en la terraza.',
+          coordinates: { lat: 40.41956, lng: -3.70349 },
+          image: 'https://res.cloudinary.com/tf-lab/image/upload/restaurant/57dbdada-c307-4e9d-b0fa-0a822fd36a02/c4809b05-8fc3-4ce2-9bcd-da97ed90488d.jpg'
         },
         {
-          id: 3,
-          name: 'PetStop',
-          description: 'Quick bites for you and your pet!',
-          address: '7890 Pet Rd, Chicago, USA',
-          coordinates: { lat: 41.878113, lng: -87.629799 },
-          petPolicy: 'Pets allowed only outside.',
+          id: 444444,
+          name: 'Hotel Peludo Tenerife',
+          description: 'Hotel en Tenerife donde las mascotas son siempre bienvenidas.',
+          address: 'Avenida de la Playa, 12, Tenerife, España',
+          petPolicy: 'Perros permitidos en todo el hotel.',
+          coordinates: { lat: 28.2916, lng: -16.6291 },
+          image: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
         },
       ],
-      selectedRestaurant: {},
+      selectedPlace: {},
       map: null,
       reviews: [],
       hasVisited: true,
@@ -71,8 +72,8 @@ export default {
   },
   mounted() {
     const id = parseInt(this.$route.params.id);
-    this.selectedRestaurant = this.restaurants.find((r) => r.id === id);
-    if (this.selectedRestaurant) {
+    this.selectedPlace = this.places.find((place) => place.id === id);
+    if (this.selectedPlace) {
       this.$nextTick(() => {
         this.initMap();
         this.loadReviews();
@@ -84,25 +85,23 @@ export default {
       this.$router.go(-1);
     },
     initMap() {
-      setTimeout(() => {
-        const { lat, lng } = this.selectedRestaurant.coordinates;
-        this.map = L.map('map').setView([lat, lng], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '© OpenStreetMap',
-        }).addTo(this.map);
-        L.marker([lat, lng])
-          .addTo(this.map)
-          .bindPopup(this.selectedRestaurant.name)
-          .openPopup();
-      }, 500);
+      const { lat, lng } = this.selectedPlace.coordinates;
+      this.map = L.map('map').setView([lat, lng], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap',
+      }).addTo(this.map);
+      L.marker([lat, lng])
+        .addTo(this.map)
+        .bindPopup(this.selectedPlace.name)
+        .openPopup();
     },
     addReview(newReview) {
       this.reviews.push(newReview);
-      localStorage.setItem(`reviews-${this.selectedRestaurant.id}`, JSON.stringify(this.reviews));
+      localStorage.setItem(`reviews-${this.selectedPlace.id}`, JSON.stringify(this.reviews));
     },
     loadReviews() {
-      const savedReviews = localStorage.getItem(`reviews-${this.selectedRestaurant.id}`);
+      const savedReviews = localStorage.getItem(`reviews-${this.selectedPlace.id}`);
       this.reviews = savedReviews ? JSON.parse(savedReviews) : [];
     },
   },
@@ -110,7 +109,7 @@ export default {
 </script>
 
 <style scoped>
-.restaurant-details {
+.place-details {
   padding: 24px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -120,7 +119,7 @@ export default {
   font-family: Arial, sans-serif;
 }
 
-.restaurant-details h1 {
+.place-details h1 {
   font-size: 30px;
   font-weight: bold;
   color: #007bff;

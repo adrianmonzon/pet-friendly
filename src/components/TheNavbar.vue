@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div class="navbar-brand">
-      <router-link to="/" class="brand-link">Mi Sitio</router-link>
+      <router-link to="/" class="brand-link">Welcome Pets</router-link>
     </div>
     <button class="hamburger" @click="toggleMenu">
       <span></span>
@@ -14,10 +14,10 @@
         <router-link to="/">Inicio</router-link>
       </li>
       <li>
-        <router-link to="/profile">Mi Perfil</router-link>
+        <router-link to="/perfil">Mi Perfil</router-link>
       </li>
       <li>
-        <router-link to="/events">Eventos</router-link>
+        <router-link to="/eventos">Eventos</router-link>
       </li>
     </ul>
   </nav>
@@ -45,15 +45,20 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
+  color: #007bff;
+  border-bottom: 1px solid #007bff;
+
 }
 
 .brand-link {
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #fff;
+  color: #007bff;
+}
+
+.brand-link:hover {
+  color: #0056b3;
 }
 
 .menu {
@@ -70,13 +75,13 @@ export default {
 
 .menu li a {
   text-decoration: none;
-  color: #fff;
+  color: #007bff;
   font-size: 1rem;
   transition: color 0.3s;
 }
 
 .menu li a:hover {
-  color: #007bff;
+  color: #0056b3;
 }
 
 .hamburger {
@@ -95,7 +100,7 @@ export default {
   display: block;
   width: 100%;
   height: 4px;
-  background-color: #fff;
+  background-color: #007bff;
   border-radius: 2px;
   transition: transform 0.3s, opacity 0.3s;
 }
@@ -107,7 +112,6 @@ export default {
     position: absolute;
     top: 60px;
     right: 0;
-    background-color: #333;
     width: 100%;
     max-height: 0;
     overflow: hidden;
